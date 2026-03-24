@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veltech University – Campus Event Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo-block">
+      <div class="logo-emblem">V</div>
+      <div class="logo-text">
+        <span class="logo-name">VELTECH UNIVERSITY</span>
+        <span class="logo-sub">Campus Event &amp; Registration Portal</span>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="#events" class="nav-link">Events</a>
+      <a href="#register" class="nav-link">Register</a>
+      <a href="#my-registrations" class="nav-link">My Registrations</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-outline" onclick="openModal('loginModal')">Login</button>
+      <button class="btn-gold" onclick="openModal('signupModal')">Sign Up</button>
+    </div>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">&#9776;</button>
+  </div>
+</header>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Veltech University &bull; Chennai</div>
+    <h1 class="hero-title">
+      Discover &amp; Join<br/>
+      <span class="gold-text">Campus Events</span>
+    </h1>
+    <p class="hero-desc">
+      Register for workshops, seminars, cultural fests, hackathons &amp; more.<br/>
+      Your academic journey, amplified.
+    </p>
+    <div class="hero-cta">
+      <button class="btn-gold large" onclick="scrollTo('events')">Explore Events</button>
+      <button class="btn-ghost large" onclick="openModal('signupModal')">Get Started Free</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num" id="stat-events">120+</span><span class="stat-label">Events/Year</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-num">5000+</span><span class="stat-label">Registrations</span></div>
+      <div class="stat-div"></div>
+      <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Departments</span></div>
+    </div>
+  </div>
+  <div class="hero-card-float">
+    <div class="float-card">
+      <div class="fc-dot green"></div>
+      <span>Tech Symposium 2025 — <strong>Open</strong></span>
+    </div>
+    <div class="float-card">
+      <div class="fc-dot gold"></div>
+      <span>Hackathon X — <strong>Registering</strong></span>
+    </div>
+    <div class="float-card">
+      <div class="fc-dot blue"></div>
+      <span>Cultural Fest — <strong>Upcoming</strong></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FILTER BAR ═══════════════ -->
+<section class="filter-bar" id="events">
+  <div class="container">
+    <div class="filter-wrap">
+      <input class="search-input" id="searchInput" type="text" placeholder="🔍  Search events, workshops, hackathons…" oninput="filterEvents()"/>
+      <div class="filter-chips">
+        <button class="chip active" onclick="setFilter('All', this)">All</button>
+        <button class="chip" onclick="setFilter('Technical', this)">Technical</button>
+        <button class="chip" onclick="setFilter('Cultural', this)">Cultural</button>
+        <button class="chip" onclick="setFilter('Workshop', this)">Workshop</button>
+        <button class="chip" onclick="setFilter('Hackathon', this)">Hackathon</button>
+        <button class="chip" onclick="setFilter('Sports', this)">Sports</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ EVENTS GRID ═══════════════ -->
+<section class="events-section">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Upcoming <span class="gold-text">Events</span></h2>
+      <p class="section-sub">Don't miss the most exciting campus experiences of the year</p>
+    </div>
+    <div class="events-grid" id="eventsGrid">
+      <!-- Cards injected by JS -->
+    </div>
+    <div class="no-results hidden" id="noResults">
+      <p>No events found. Try a different search or category.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ REGISTRATION FORM ═══════════════ -->
+<section class="register-section" id="register">
+  <div class="container">
+    <div class="reg-layout">
+      <div class="reg-info">
+        <div class="reg-badge">Quick Registration</div>
+        <h2 class="reg-title">Reserve Your <span class="gold-text">Spot</span></h2>
+        <p class="reg-desc">Fill in your details to register for any campus event. Confirmation will be sent to your university email.</p>
+        <ul class="reg-perks">
+          <li>✔ Instant email confirmation</li>
+          <li>✔ Certificate of participation</li>
+          <li>✔ Access to event resources</li>
+          <li>✔ Networking opportunities</li>
+        </ul>
+      </div>
+      <div class="reg-form-card">
+        <form id="registrationForm" onsubmit="handleRegistration(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" id="reg-name" placeholder="E.g. Arjun Kumar" required/>
+            </div>
+            <div class="form-group">
+              <label>Register Number *</label>
+              <input type="text" id="reg-rollno" placeholder="E.g. 21BCE1234" required/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Department *</label>
+              <select id="reg-dept" required>
+                <option value="">Select Department</option>
+                <option>Computer Science & Engineering</option>
+                <option>Electronics & Communication</option>
+                <option>Mechanical Engineering</option>
+                <option>Civil Engineering</option>
+                <option>Information Technology</option>
+                <option>Artificial Intelligence & ML</option>
+                <option>Business Administration</option>
+                <option>Biotechnology</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Year *</label>
+              <select id="reg-year" required>
+                <option value="">Select Year</option>
+                <option>1st Year</option>
+                <option>2nd Year</option>
+                <option>3rd Year</option>
+                <option>4th Year</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" id="reg-email" placeholder="you@veltech.edu.in" required/>
+            </div>
+            <div class="form-group">
+              <label>Phone *</label>
+              <input type="tel" id="reg-phone" placeholder="+91 9876543210" required/>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Select Event *</label>
+            <select id="reg-event" required>
+              <option value="">Choose an event…</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Additional Message</label>
+            <textarea id="reg-message" rows="3" placeholder="Any specific requirements or questions?"></textarea>
+          </div>
+          <div class="form-group full checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" required/>
+              I agree to the <a href="#" class="gold-link">terms &amp; conditions</a> of the event portal
+            </label>
+          </div>
+          <button type="submit" class="btn-gold full-btn" id="submitBtn">
+            <span id="submitText">Register for Event</span>
+            <span id="submitSpinner" class="spinner hidden"></span>
+          </button>
+          <div id="regSuccess" class="success-msg hidden">
+            🎉 Successfully registered! Confirmation sent to your email.
+          </div>
+          <div id="regError" class="error-msg hidden">
+            ❌ Registration failed. Please try again.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MY REGISTRATIONS ═══════════════ -->
+<section class="my-reg-section" id="my-registrations">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">My <span class="gold-text">Registrations</span></h2>
+      <p class="section-sub">Track all your registered events in one place</p>
+    </div>
+    <div class="lookup-bar">
+      <input type="text" id="lookupRoll" placeholder="Enter your Register Number (e.g. 21BCE1234)"/>
+      <button class="btn-gold" onclick="lookupRegistrations()">View My Events</button>
+    </div>
+    <div class="reg-table-wrap" id="regTableWrap" style="display:none">
+      <table class="reg-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Event Name</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="regTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="section-head">
+      <h2 class="section-title">Get in <span class="gold-text">Touch</span></h2>
+      <p class="section-sub">Have questions? Our event coordination team is here to help.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="cc-icon">📍</div>
+        <h3>Address</h3>
+        <p>Veltech University<br/>No. 42, Avadi-Vel Tech Road<br/>Chennai – 600 062, Tamil Nadu</p>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">📞</div>
+        <h3>Phone</h3>
+        <p>+91 44 2684 1601<br/>+91 44 2684 1602<br/>Toll-free: 1800-XXX-XXXX</p>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">✉️</div>
+        <h3>Email</h3>
+        <p>events@veltech.edu.in<br/>registrations@veltech.edu.in<br/>support@veltech.edu.in</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="logo-emblem small">V</div>
+      <span>VELTECH UNIVERSITY</span>
+    </div>
+    <p class="footer-copy">© 2025 Veltech University. All rights reserved. | Campus Event &amp; Registration Portal</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Help &amp; FAQ</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ LOGIN MODAL ═══════════════ -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <div class="modal-logo">
+      <div class="logo-emblem small">V</div>
+    </div>
+    <h2 class="modal-title">Welcome Back</h2>
+    <p class="modal-sub">Login to your Veltech Event account</p>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Register Number / Email</label>
+        <input type="text" id="login-user" placeholder="21BCE1234 or email" required/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-pass" placeholder="••••••••" required/>
+      </div>
+      <button type="submit" class="btn-gold full-btn">Login</button>
+      <p class="modal-switch">Don't have an account? <a href="#" onclick="switchModal('loginModal','signupModal')">Sign Up</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════ SIGNUP MODAL ═══════════════ -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('signupModal')">✕</button>
+    <div class="modal-logo">
+      <div class="logo-emblem small">V</div>
+    </div>
+    <h2 class="modal-title">Create Account</h2>
+    <p class="modal-sub">Join the Veltech Event Portal</p>
+    <form onsubmit="handleSignup(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Your full name" required/>
+        </div>
+        <div class="form-group">
+          <label>Register No.</label>
+          <input type="text" placeholder="21BCE1234" required/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>University Email</label>
+        <input type="email" placeholder="you@veltech.edu.in" required/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" placeholder="Create a strong password" required/>
+      </div>
+      <button type="submit" class="btn-gold full-btn">Create Account</button>
+      <p class="modal-switch">Already have an account? <a href="#" onclick="switchModal('signupModal','loginModal')">Login</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════ EVENT DETAIL MODAL ═══════════════ -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal wide">
+    <button class="modal-close" onclick="closeModal('eventModal')">✕</button>
+    <div id="eventModalContent"></div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
